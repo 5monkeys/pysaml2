@@ -1662,6 +1662,14 @@ def entities_descriptor_from_string(xml_string):
     return saml2.create_class_from_xml_string(EntitiesDescriptor, xml_string)
 
 
+def get_root_uri_from_string(xml_string):
+    entities_descr = entities_descriptor_from_string(xml_string)
+    entities_descr_uri = "%s:%s" % (EntitiesDescriptor.c_namespace, EntitiesDescriptor.c_tag)
+    entity_descr_uri = "%s:%s" % (EntityDescriptor.c_namespace, EntityDescriptor.c_tag)
+    return entities_descr_uri if entities_descr else entity_descr_uri
+
+
+
 # ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 EntitiesDescriptorType_.c_children['{urn:oasis:names:tc:SAML:2.0:metadata}EntitiesDescriptor'] = ('entities_descriptor', [EntitiesDescriptor])
 EntitiesDescriptor.c_children['{urn:oasis:names:tc:SAML:2.0:metadata}EntitiesDescriptor'] = ('entities_descriptor', [EntitiesDescriptor])

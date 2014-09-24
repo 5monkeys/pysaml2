@@ -477,9 +477,9 @@ class MetaData(object):
         """
         (response, content) = self.http.request(url)
         if response.status == 200:
-            if verify_signature(content, self.xmlsec_binary, cert,
-                    node_name="%s:%s" % (md.EntitiesDescriptor.c_namespace,
-                                        md.EntitiesDescriptor.c_tag)):
+            # Get the correct root node to verify
+            node_name = md.get_root_uri_from_string(content)
+            if verify_signature(content, self.xmlsec_binary, cert, node_name=node_name):
                 self.import_metadata(content, (url, cert))
                 return True
         else:
